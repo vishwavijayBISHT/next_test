@@ -31,7 +31,7 @@ const Home = ({ products }) => {
 //   };
 // }
 export async function getServerSideProps({ params }) {
-  const res = await fetch("http://localhost:3000/api/products");
+  const res = await fetch("http://Kart@011_test_next.vercel.app/api/products");
   const data = await res.json();
   console.log(data);
   return {

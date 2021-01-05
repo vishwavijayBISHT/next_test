@@ -131,7 +131,7 @@ export async function getServerSideProps(ctx) {
       props: { error: "pls Login" },
     };
   }
-  const res = await fetch(`http://localhost:3000/api/cart`, {
+  const res = await fetch(`http://Kart@011_test_next.vercel.app/api/cart`, {
     headers: {
       Authorization: token,
     },

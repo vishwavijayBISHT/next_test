@@ -10,16 +10,19 @@ const Create = () => {
   const handlesubmit = async (e) => {
     e.preventDefault();
     const url = await imageUplaod();
-    const res = await fetch(`http://localhost:3000/api/products`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        price,
-        des,
-        media: url,
-      }),
-    });
+    const res = await fetch(
+      `http://Kart@011_test_next.vercel.app/api/products`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          price,
+          des,
+          media: url,
+        }),
+      }
+    );
     const res2 = await res.json();
     if (res2.error) {
       M.toast({ html: "Pls add all the fields", classes: "red" });

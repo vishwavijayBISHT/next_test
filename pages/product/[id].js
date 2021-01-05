@@ -39,7 +39,7 @@ const ProductD = ({ product }) => {
   };
   const deleteproduct = async () => {
     const res = await fetch(
-      `http://localhost:3000/api/productsdetail/${product._id}`,
+      `http://Kart@011_test_next.vercel.app/api/productsdetail/${product._id}`,
       {
         method: "DELETE",
       }
@@ -50,7 +50,7 @@ const ProductD = ({ product }) => {
     router.push("/");
   };
   const AddtoCart = async () => {
-    const res = await fetch(`http://localhost:3000/api/cart`, {
+    const res = await fetch(`http://Kart@011_test_next.vercel.app/api/cart`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -136,7 +136,7 @@ export default ProductD;
 
 export async function getServerSideProps({ params }) {
   const res = await fetch(
-    `http://localhost:3000/api/productsdetail/${params.id}`
+    `http://Kart@011_test_next.vercel.app/api/productsdetail/${params.id}`
   );
 
   const data = await res.json();

@@ -68,7 +68,7 @@ export async function getServerSideProps(ctx) {
     res.end();
   }
 
-  const res = await fetch(`http://localhost:3000/api/orders`, {
+  const res = await fetch(`http://Kart@011_test_next.vercel.app/api/orders`, {
     headers: {
       Authorization: token,
     },

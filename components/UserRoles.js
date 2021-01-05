@@ -11,7 +11,7 @@ function UserRoles() {
     fetchUser();
   }, []);
   const fetchUser = async () => {
-    const res = await fetch(`http://localhost:3000/api/user`, {
+    const res = await fetch(`http://Kart@011_test_next.vercel.app/api/user`, {
       method: "GET",
       headers: {
         Authorization: token,
@@ -23,7 +23,7 @@ function UserRoles() {
   };
 
   const handleRole = async (_id, role) => {
-    const res = await fetch(`http://localhost:3000/api/user`, {
+    const res = await fetch(`http://Kart@011_test_next.vercel.app/api/user`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
