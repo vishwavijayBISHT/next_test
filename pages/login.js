@@ -80,5 +80,5 @@ export async function getServerSideProps({ params }) {
     props: [],
   };
 }
-export default Home;
+
 export default Login;
