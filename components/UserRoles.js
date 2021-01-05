@@ -5,13 +5,12 @@ import { parseCookies } from "nookies";
 function UserRoles() {
   const [users, setUsers] = useState([]);
   const { token } = parseCookies();
-  console.log("fetchuse");
   useEffect(() => {
-    console.log("fetchuse");
     fetchUser();
   }, []);
   const fetchUser = async () => {
-    const res = await fetch(`http://Kart@011_test_next.vercel.app/api/user`, {
+    console.log("fetchuse");
+    const res = await fetch(`http://localhost:3000/api/user`, {
       method: "GET",
       headers: {
         Authorization: token,
@@ -23,7 +22,7 @@ function UserRoles() {
   };
 
   const handleRole = async (_id, role) => {
-    const res = await fetch(`http://Kart@011_test_next.vercel.app/api/user`, {
+    const res = await fetch(`http://localhost:3000/api/user`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

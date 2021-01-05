@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import cookie from "js-cookie";
 import Link from "next/link";
-const Login = () => {
+const Login = (props) => {
   const a = useRouter();
   // const [name, setname] = useState("");
   const [email, setemial] = useState("");
@@ -74,4 +74,11 @@ const Login = () => {
     </div>
   );
 };
+
+export async function getServerSideProps({ params }) {
+  return {
+    props: [],
+  };
+}
+export default Home;
 export default Login;

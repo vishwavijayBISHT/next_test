@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-const Singup = () => {
+const Singup = (props) => {
   const abcd = useRouter();
   const [name, setname] = useState("");
   const [email, setemial] = useState("");
@@ -73,4 +73,11 @@ const Singup = () => {
     </div>
   );
 };
+
+export async function getServerSideProps({ params }) {
+  return {
+    props: [],
+  };
+}
+e;
 export default Singup;
