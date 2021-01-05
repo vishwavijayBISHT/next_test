@@ -79,5 +79,5 @@ export async function getServerSideProps({ params }) {
     props: [],
   };
 }
-e;
+;
 export default Singup;
