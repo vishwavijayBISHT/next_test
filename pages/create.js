@@ -1,122 +1,101 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
-import nookies from "nookies";
-const Create = () => {
-  const abc = useRouter();
-  const [name, setname] = useState("");
-  const [price, setprice] = useState("");
-  const [media, setmedia] = useState("");
-  const [des, setdes] = useState("");
-  const handlesubmit = async (e) => {
-    e.preventDefault();
-    const url = await imageUplaod();
-    const res = await fetch(
-      `http://Kart@011_test_next.vercel.app/api/products`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+import Link from 'next/link'
+import {useState} from 'react'
+import baseUrl from '../helpers/baseUrl'
+import {parseCookies} from 'nookies'
+const Create = ()=>{
+   const [name,setName] = useState("")
+   const [price,setPrice] = useState("")
+   const [media,setMedia] = useState("")
+   const [description,setDescription] = useState("")
+    const handleSubmit = async (e)=>{
+      e.preventDefault()
+      try{
+             const mediaUrl =  await imageUpload()
+      const res =  await fetch(`${baseUrl}/api/products`,{
+        method:"POST",
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
           name,
           price,
-          des,
-          media: url,
-        }),
+          mediaUrl,
+          description
+        })
+      })
+      const res2 = await res.json()
+      if(res2.error){
+        M.toast({html: res2.error,classes:"red"})
+      }else{
+        M.toast({html: "Product saved",classes:"green"})
       }
-    );
-    const res2 = await res.json();
-    if (res2.error) {
-      M.toast({ html: "Pls add all the fields", classes: "red" });
-    } else {
-      M.toast({ html: "Product Added", classes: "green" });
-      abc.push("/");
+      }catch(err){
+        console.log(err)
+      }
+ 
     }
-  };
-  const imageUplaod = async () => {
-    const data = new FormData();
-    data.append("file", media);
-    data.append("upload_preset", "nextstore");
-    data.append("cloud_name", "setu");
-    const res = await fetch(
-      "	https://api.cloudinary.com/v1_1/setu/image/upload",
-      {
-        method: "POST",
-        body: data,
-      }
-    );
-    const res2 = await res.json();
-    return res2.url;
-  };
-  return (
-    <form className="container" onSubmit={(e) => handlesubmit(e)}>
-      <input
-        type="text"
-        name="name"
-        placeholder="name"
-        value={name}
-        onChange={(e) => {
-          setname(e.target.value);
-        }}
-      />
-      <input
-        type="text"
-        name="price"
-        placeholder="price"
-        value={price}
-        onChange={(e) => {
-          setprice(e.target.value);
-        }}
-      />
-
-      <div className="file-field input-field">
-        <div className="btn">
-          <span>File</span>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => {
-              setmedia(e.target.files[0]);
-            }}
-          />
+    const imageUpload = async ()=>{
+         const data =  new FormData()
+         data.append('file',media)
+         data.append('upload_preset',"mystore")
+         data.append('cloud_name',"cnq")
+         const res = await fetch("	https://api.cloudinary.com/v1_1/cnq/image/upload",{
+           method:"POST",
+           body:data
+         })
+         const res2  = await res.json()
+         return res2.url
+    }
+    return(
+     <form className="container" onSubmit={(e)=>handleSubmit(e)}>
+         <input type="text" name="name" placeholder="Name" 
+         value={name} 
+         onChange={(e)=>{setName(e.target.value)}}
+         />
+         <input type="text" name="price" placeholder="Price" 
+         value={price} 
+         onChange={(e)=>{setPrice(e.target.value)}}
+         />
+         <div className="file-field input-field">
+          <div className="btn #1565c0 blue darken-3">
+            <span>File</span>
+            <input type="file" 
+              accept="image/*"
+              onChange={(e)=>setMedia(e.target.files[0])}
+            />
+          </div>
+          <div className="file-path-wrapper">
+            <input className="file-path validate" type="text" />
+          </div>
         </div>
-        <img
-          className="responsive"
-          src={media ? URL.createObjectURL(media) : ""}
-        ></img>
-        <div className="file-path-wrapper">
-          <input className="file-path validate" type="text" />
-        </div>
-      </div>
-      <textarea
-        id="textarea1"
-        className="materialize-textarea"
-        name="des"
-        placeholder="description"
-        value={des}
-        onChange={(e) => {
-          setdes(e.target.value);
-        }}
-      ></textarea>
-      <button className="btn waves-effect waves-light" type="submit">
-        Submit
-        <i className="material-icons right">send</i>
-      </button>
-    </form>
-  );
-};
-
-export async function getServerSideProps(ctx) {
-  const cookie = nookies.get(ctx);
-
-  const user = cookie.user ? JSON.parse(cookie.user) : "";
-  console.log(user.role);
-
-  if (user.role != "admin") {
-    const { res } = ctx;
-    res.writeHead(302, { Location: "/" });
-    res.end();
+         <img className="responsive-img" src={media?URL.createObjectURL(media):""} />
+        <textarea name="description" 
+        placeholder="Description"
+         value={description} 
+         onChange={(e)=>{setDescription(e.target.value)}}
+         className="materialize-textarea" ></textarea>
+          <button className="btn waves-effect waves-light #1565c0 blue darken-3" type="submit">Submit
+            <i className="material-icons right">send</i>
+          </button>
+     </form>
+    )
   }
-  return {
-    props: {},
-  };
-}
-export default Create;
+  
+
+
+  export async function getServerSideProps(ctx){
+    const cookie = parseCookies(ctx)
+     const user =  cookie.user ? JSON.parse(cookie.user) : ""
+    if(user.role == 'user' || user.role == '' ){
+        const {res} = ctx
+        res.writeHead(302,{Location:"/"})
+        res.end()
+    }
+  
+  
+    return {
+        props:{}
+    }
+  }
+  
+  export default Create

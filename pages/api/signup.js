@@ -1,32 +1,29 @@
-import initDB from "../../helpers/initDb";
-import UserIn from "../../models/UserIn";
-import Cart from "../../models/Cart";
-import bcrypt from "bcryptjs";
-initDB();
-export default async (req, res) => {
-  const { name, email, pass } = req.body;
-  console.log(name, email, pass);
-  try {
-    if (!name || !email || !pass) {
-      return res.status(422).json({ error: "Pls add all the fields" });
-    }
-    const user = await UserIn.findOne({ email });
-    if (user) {
-      return res.status(422).json({ error: "User Already Exist" });
-    }
-    const hpass = await bcrypt.hash(pass, 12);
-    const newUser = await new UserIn({
-      name,
-      email,
-      password: hpass,
-    }).save();
-    await new Cart({
-      user: newUser._id,
-    }).save();
+import initDB from '../../helpers/initDB'
+import User from '../../models/User'
+import bcrypt from 'bcryptjs'
+import Cart from '../../models/Cart'
+initDB()
 
-    console.log(newUser);
-    res.status(201).json({ message: "signup success" });
-  } catch (err) {
-    console.log(err);
-  }
-};
+
+export default async (req,res)=>{
+     const {name,email,password} = req.body
+     try{
+        if(!name || !email || !password){
+          return res.status(422).json({error:"please ass all the fields"})
+        }
+      const user = await User.findOne({email})
+      if(user){
+          return res.status(422).json({error:"user already exists with that email"})
+      }
+     const hashedPassword = await bcrypt.hash(password,12)
+     const newUser =  await new User({
+         name,
+         email,
+         password:hashedPassword
+     }).save()
+     await new Cart({user:newUser._id}).save()
+        res.status(201).json({message:"signup success"})
+     }catch(err){
+         console.log(err)
+     }
+}
